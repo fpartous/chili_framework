@@ -24,7 +24,9 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	brd(gfx),
+	rng(std::random_device()())
 {
 }
 
@@ -34,6 +36,7 @@ void Game::Go()
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
+
 }
 
 void Game::UpdateModel()
@@ -42,4 +45,13 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	std::uniform_int_distribution<int> colorDist(0, 255);
+	for (int y = 0; y < brd.getGridHeight(); y++)
+	{
+		for (int x = 0; x < brd.getGridWidth(); x++)
+		{
+			Location loc = { x, y };
+			Color c(colorDist(rng), colorDist(rng), colorDist(rng));
+		}
+	}
 }
